@@ -30,7 +30,6 @@
     min-height: 100vh;
   }
 
-  /* CABECERA */
   header {
     background: var(--azul);
     color: white;
@@ -67,14 +66,12 @@
     border-radius: 20px;
   }
 
-  /* CONTENEDOR PRINCIPAL */
   .container {
     max-width: 860px;
     margin: 40px auto;
     padding: 0 20px 60px;
   }
 
-  /* SELECTOR DE INSTITUCIÓN */
   .selector-card {
     background: var(--blanco);
     border: 1px solid var(--gris-borde);
@@ -133,7 +130,6 @@
   }
   .btn-cargar:hover { background: var(--azul-medio); }
 
-  /* ESTADO / MENSAJES */
   #estado {
     padding: 14px 18px;
     border-radius: 8px;
@@ -145,10 +141,9 @@
     gap: 10px;
   }
   #estado.cargando { display: flex; background: var(--azul-claro); color: var(--azul); }
-  #estado.ok      { display: flex; background: #e8f5ee; color: var(--verde); }
-  #estado.error   { display: flex; background: #fdecea; color: var(--rojo); }
+  #estado.ok       { display: flex; background: #e8f5ee; color: var(--verde); }
+  #estado.error    { display: flex; background: #fdecea; color: var(--rojo); }
 
-  /* FORMULARIO */
   #formulario { display: none; }
   #formulario.visible { display: block; }
 
@@ -160,7 +155,6 @@
     box-shadow: 0 2px 12px rgba(26,58,92,0.07);
     margin-bottom: 20px;
   }
-
   .section-header {
     background: var(--azul);
     color: white;
@@ -170,9 +164,7 @@
     letter-spacing: 0.1em;
     text-transform: uppercase;
   }
-  .section-header.nuevo {
-    background: var(--acento);
-  }
+  .section-header.nuevo { background: var(--acento); }
 
   .fields {
     padding: 24px 28px;
@@ -180,7 +172,6 @@
     flex-direction: column;
     gap: 20px;
   }
-
   .field-group {
     display: flex;
     flex-direction: column;
@@ -228,86 +219,74 @@
   }
   textarea { min-height: 100px; }
 
-  /* RADIOS ESTILIZADOS */
-  .radio-group {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-  }
-  .radio-option {
-    position: relative;
-  }
-  .radio-option input[type="radio"] {
-    position: absolute;
-    opacity: 0;
-    width: 0;
-    height: 0;
-  }
+  /* RADIOS */
+  .radio-group { display: flex; flex-wrap: wrap; gap: 10px; }
+  .radio-option { position: relative; }
+  .radio-option input[type="radio"] { position: absolute; opacity: 0; width: 0; height: 0; }
   .radio-option label {
-    display: flex;
-    align-items: center;
-    gap: 8px;
+    display: flex; align-items: center; gap: 8px;
     padding: 9px 18px;
     border: 2px solid var(--gris-borde);
     border-radius: 40px;
-    font-size: 0.88rem;
-    font-weight: 500;
-    text-transform: none;
-    letter-spacing: 0;
+    font-size: 0.88rem; font-weight: 500;
+    text-transform: none; letter-spacing: 0;
     color: var(--texto-suave);
-    cursor: pointer;
-    transition: all 0.18s;
-    background: var(--blanco);
-    white-space: nowrap;
+    cursor: pointer; transition: all 0.18s;
+    background: var(--blanco); white-space: nowrap;
   }
   .radio-option input[type="radio"]:checked + label {
     border-color: var(--azul);
     background: var(--azul-claro);
-    color: var(--azul);
-    font-weight: 600;
+    color: var(--azul); font-weight: 600;
   }
-  .radio-option label:hover {
-    border-color: var(--azul-medio);
-    color: var(--azul-medio);
-  }
+  .radio-option label:hover { border-color: var(--azul-medio); color: var(--azul-medio); }
 
-  /* BOTONES DE ACCIÓN */
-  .action-bar {
-    display: flex;
-    gap: 12px;
-    justify-content: flex-end;
-    margin-top: 28px;
+  /* CHECKBOXES */
+  .check-group { display: flex; flex-wrap: wrap; gap: 10px; }
+  .check-option { position: relative; }
+  .check-option input[type="checkbox"] { position: absolute; opacity: 0; width: 0; height: 0; }
+  .check-option label {
+    display: flex; align-items: center; gap: 8px;
+    padding: 9px 18px;
+    border: 2px solid var(--gris-borde);
+    border-radius: 40px;
+    font-size: 0.88rem; font-weight: 500;
+    text-transform: none; letter-spacing: 0;
+    color: var(--texto-suave);
+    cursor: pointer; transition: all 0.18s;
+    background: var(--blanco); white-space: nowrap;
   }
+  .check-option input[type="checkbox"]:checked + label {
+    border-color: var(--azul);
+    background: var(--azul-claro);
+    color: var(--azul); font-weight: 600;
+  }
+  .check-option input[type="checkbox"]:checked + label::before { content: '✓ '; font-weight: 700; }
+  .check-option label:hover { border-color: var(--azul-medio); color: var(--azul-medio); }
+
+  /* BOTONES */
+  .action-bar { display: flex; gap: 12px; justify-content: flex-end; margin-top: 28px; }
   .btn-guardar {
     padding: 14px 36px;
-    background: var(--acento);
-    color: white;
-    border: none;
-    border-radius: 8px;
+    background: var(--acento); color: white;
+    border: none; border-radius: 8px;
     font-family: 'DM Sans', sans-serif;
-    font-size: 1rem;
-    font-weight: 700;
-    cursor: pointer;
-    transition: background 0.2s, transform 0.1s;
+    font-size: 1rem; font-weight: 700;
+    cursor: pointer; transition: background 0.2s, transform 0.1s;
     letter-spacing: 0.02em;
   }
   .btn-guardar:hover { background: #b07820; transform: translateY(-1px); }
   .btn-guardar:active { transform: translateY(0); }
   .btn-cancelar {
     padding: 14px 24px;
-    background: transparent;
-    color: var(--texto-suave);
-    border: 2px solid var(--gris-borde);
-    border-radius: 8px;
+    background: transparent; color: var(--texto-suave);
+    border: 2px solid var(--gris-borde); border-radius: 8px;
     font-family: 'DM Sans', sans-serif;
-    font-size: 0.9rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s;
+    font-size: 0.9rem; font-weight: 600;
+    cursor: pointer; transition: all 0.2s;
   }
   .btn-cancelar:hover { border-color: var(--texto-suave); color: var(--texto); }
 
-  /* SPINNER */
   .spinner {
     width: 16px; height: 16px;
     border: 2px solid rgba(26,58,92,0.2);
@@ -318,12 +297,7 @@
   }
   @keyframes spin { to { transform: rotate(360deg); } }
 
-  footer {
-    text-align: center;
-    font-size: 0.78rem;
-    color: var(--texto-suave);
-    margin-top: 40px;
-  }
+  footer { text-align: center; font-size: 0.78rem; color: var(--texto-suave); margin-top: 40px; }
   footer a { color: var(--azul-medio); text-decoration: none; }
 
   @media (max-width: 600px) {
@@ -347,7 +321,6 @@
 
 <div class="container">
 
-  <!-- SELECTOR -->
   <div class="selector-card">
     <h2>Selecciona tu institución</h2>
     <p>Elige tu institución en el desplegable y pulsa <strong>Cargar ficha</strong> para ver y editar tus datos.</p>
@@ -360,82 +333,67 @@
     <div id="estado"></div>
   </div>
 
-  <!-- FORMULARIO -->
   <div id="formulario">
 
-    <!-- SECCIÓN: DATOS EXISTENTES -->
     <div class="form-card">
       <div class="section-header">Información general</div>
       <div class="fields">
-
         <div class="field-group">
           <label for="institucion">Institución</label>
           <input type="text" id="institucion" placeholder="Nombre de la institución" />
         </div>
-
         <div class="field-group">
           <label for="nombre_iniciativa">Nombre de la iniciativa</label>
           <input type="text" id="nombre_iniciativa" placeholder="Nombre de la iniciativa" />
         </div>
-
         <div class="field-group">
           <label for="periodo">Periodo de implementación</label>
           <input type="text" id="periodo" placeholder="Ej. Desde enero 2023" />
         </div>
-
         <div class="field-group">
           <label for="enlace">Enlace</label>
           <input type="url" id="enlace" placeholder="https://..." />
         </div>
-
         <div class="field-group">
           <label for="archivo_origen">Archivo origen</label>
           <input type="text" id="archivo_origen" placeholder="Nombre del archivo" />
         </div>
-
       </div>
     </div>
 
     <div class="form-card">
       <div class="section-header">Descripción de la iniciativa</div>
       <div class="fields">
-
         <div class="field-group">
           <label for="gobernanza">Gobernanza</label>
           <textarea id="gobernanza" rows="4" placeholder="Órgano o estructura responsable de la iniciativa..."></textarea>
         </div>
-
         <div class="field-group">
           <label for="descripcion">Descripción de la acción</label>
           <textarea id="descripcion" rows="6" placeholder="Descripción detallada de la acción..."></textarea>
         </div>
-
         <div class="field-group">
           <label for="ambitos">Ámbitos de evaluación</label>
           <textarea id="ambitos" rows="4" placeholder="Ámbitos o dominios de evaluación cubiertos..."></textarea>
         </div>
-
         <div class="field-group">
           <label for="metodologias">Metodologías y criterios</label>
           <textarea id="metodologias" rows="4" placeholder="Metodologías y criterios aplicados..."></textarea>
         </div>
-
         <div class="field-group">
           <label for="recursos">Recursos y financiación</label>
           <textarea id="recursos" rows="3" placeholder="Recursos humanos, técnicos y financiación..."></textarea>
         </div>
-
       </div>
     </div>
 
-    <!-- SECCIÓN: CAMPOS NUEVOS -->
     <div class="form-card">
       <div class="section-header nuevo">Campos nuevos — Clasificación</div>
       <div class="fields">
 
         <div class="field-group">
           <label>Agente <span class="badge-nuevo">Nuevo</span></label>
-          <div class="radio-group" id="rg-agente">
+          <div class="radio-group">
             <div class="radio-option">
               <input type="radio" name="agente" id="ag-directivo" value="Directivo/a">
               <label for="ag-directivo">Directivo/a</label>
@@ -457,7 +415,7 @@
 
         <div class="field-group">
           <label>Tipo de organización <span class="badge-nuevo">Nuevo</span></label>
-          <div class="radio-group" id="rg-tipo">
+          <div class="radio-group">
             <div class="radio-option">
               <input type="radio" name="tipo_org" id="to-univ" value="Universidad">
               <label for="to-univ">Universidad</label>
@@ -483,7 +441,7 @@
 
         <div class="field-group">
           <label>Objeto de evaluación <span class="badge-nuevo">Nuevo</span></label>
-          <div class="radio-group" id="rg-objeto">
+          <div class="radio-group">
             <div class="radio-option">
               <input type="radio" name="objeto" id="ob-cv" value="CV individual">
               <label for="ob-cv">CV individual</label>
@@ -507,8 +465,9 @@
           </div>
         </div>
 
-        <div class="check-group" id="rg-dimensiones">
+        <div class="field-group">
           <label>Dimensiones de evaluación <span class="badge-nuevo">Nuevo</span></label>
+          <div class="check-group">
             <div class="check-option">
               <input type="checkbox" id="di-inv" value="Investigación">
               <label for="di-inv">Investigación</label>
@@ -543,17 +502,11 @@
     <a href="https://coara.eu" target="_blank">coara.eu</a>
   </footer>
 
-</div><!-- fin .container -->
+</div>
 
 <script>
-// ============================================================
-// CONFIGURACIÓN — edita esta URL con la de tu Apps Script
-// ============================================================
 const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwN5NrqUxfys-s3slZXAfk0asRey5Hp87JFo23U0Q3sTP01x3T9P5PIHs8VKjfU5KzpnA/exec';
 
-// ============================================================
-// INICIALIZACIÓN — carga la lista de instituciones al abrir
-// ============================================================
 window.addEventListener('DOMContentLoaded', async () => {
   try {
     const resp = await fetch(`${APPS_SCRIPT_URL}?accion=listar`);
@@ -566,19 +519,13 @@ window.addEventListener('DOMContentLoaded', async () => {
       sel.appendChild(opt);
     });
   } catch(e) {
-    mostrarEstado('No se pudo cargar la lista de instituciones. Revisa la URL del Apps Script.', 'error');
+    mostrarEstado('No se pudo cargar la lista de instituciones.', 'error');
   }
 });
 
-// ============================================================
-// CARGAR FICHA
-// ============================================================
 async function cargarFicha() {
   const inst = document.getElementById('selectInstitucion').value;
-  if (!inst) {
-    mostrarEstado('Por favor, selecciona una institución.', 'error');
-    return;
-  }
+  if (!inst) { mostrarEstado('Por favor, selecciona una institución.', 'error'); return; }
   mostrarEstado('Cargando datos...', 'cargando');
   try {
     const resp = await fetch(`${APPS_SCRIPT_URL}?accion=obtener&institucion=${encodeURIComponent(inst)}`);
@@ -593,14 +540,8 @@ async function cargarFicha() {
   }
 }
 
-// ============================================================
-// RELLENAR FORMULARIO con los datos de la fila
-// ============================================================
 function rellenarFormulario(d) {
-  const set = (id, val) => {
-    const el = document.getElementById(id);
-    if (el) el.value = val || '';
-  };
+  const set = (id, val) => { const el = document.getElementById(id); if (el) el.value = val || ''; };
   set('institucion',       d['Institución']);
   set('nombre_iniciativa', d['Nombre de la iniciativa']);
   set('periodo',           d['Periodo de implementación']);
@@ -612,22 +553,22 @@ function rellenarFormulario(d) {
   set('metodologias',      d['Metodologías y criterios']);
   set('recursos',          d['Recursos y financiación']);
 
-  // Radios
-  marcarRadio('agente',      d['Agente']);
-  marcarRadio('tipo_org',    d['Tipo de organización']);
-  marcarRadio('objeto',      d['Objeto de evaluación']);
-  marcarRadio('dimensiones', d['Dimensiones de evaluación']);
+  marcarRadio('agente',   d['Agente']);
+  marcarRadio('tipo_org', d['Tipo de organización']);
+  marcarRadio('objeto',   d['Objeto de evaluación']);
+  marcarCheckboxes(['di-inv','di-doc','di-for','di-lid'], d['Dimensiones de evaluación']);
 }
 
 function marcarRadio(nombre, valor) {
   if (!valor) return;
-  const radios = document.querySelectorAll(`input[name="${nombre}"]`);
-  radios.forEach(r => { r.checked = (r.value === valor); });
+  document.querySelectorAll(`input[name="${nombre}"]`).forEach(r => { r.checked = (r.value === valor); });
 }
 
-// ============================================================
-// GUARDAR FICHA
-// ============================================================
+function marcarCheckboxes(ids, valor) {
+  const valores = valor ? valor.split(',').map(v => v.trim()) : [];
+  ids.forEach(id => { const el = document.getElementById(id); if (el) el.checked = valores.includes(el.value); });
+}
+
 async function guardarFicha() {
   const datos = {
     'Institución':               document.getElementById('institucion').value,
@@ -643,15 +584,13 @@ async function guardarFicha() {
     'Agente':                    getRadio('agente'),
     'Tipo de organización':      getRadio('tipo_org'),
     'Objeto de evaluación':      getRadio('objeto'),
-    'Dimensiones de evaluación': getRadio('dimensiones'),
+    'Dimensiones de evaluación': getCheckboxes(['di-inv','di-doc','di-for','di-lid']),
   };
 
   mostrarEstado('Guardando...', 'cargando');
   try {
-    const resp = await fetch(APPS_SCRIPT_URL, {
-      method: 'POST',
-      body: JSON.stringify({ accion: 'guardar', datos }),
-    });
+    const params = new URLSearchParams({ accion: 'guardar', datos: JSON.stringify(datos) });
+    const resp = await fetch(`${APPS_SCRIPT_URL}?${params.toString()}`);
     const result = await resp.json();
     if (result.ok) {
       mostrarEstado('✓ Datos guardados correctamente.', 'ok');
@@ -668,9 +607,10 @@ function getRadio(nombre) {
   return sel ? sel.value : '';
 }
 
-// ============================================================
-// CANCELAR
-// ============================================================
+function getCheckboxes(ids) {
+  return ids.map(id => document.getElementById(id)).filter(el => el && el.checked).map(el => el.value).join(', ');
+}
+
 function cancelar() {
   document.getElementById('formulario').classList.remove('visible');
   document.getElementById('selectInstitucion').value = '';
@@ -678,22 +618,16 @@ function cancelar() {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-// ============================================================
-// UTILIDADES DE ESTADO
-// ============================================================
 function mostrarEstado(msg, tipo) {
   const el = document.getElementById('estado');
   el.className = tipo;
-  if (tipo === 'cargando') {
-    el.innerHTML = `<div class="spinner"></div> ${msg}`;
-  } else {
-    el.innerHTML = msg;
-  }
+  el.innerHTML = tipo === 'cargando' ? `<div class="spinner"></div> ${msg}` : msg;
 }
 function ocultarEstado() {
-  document.getElementById('estado').className = '';
-  document.getElementById('estado').innerHTML = '';
+  const el = document.getElementById('estado');
+  el.className = ''; el.innerHTML = '';
 }
 </script>
 </body>
 </html>
+
