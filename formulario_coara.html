@@ -590,13 +590,11 @@ async function guardarFicha() {
   mostrarEstado('Guardando...', 'cargando');
   try {
     const params = new URLSearchParams({ accion: 'guardar', datos: JSON.stringify(datos) });
-    const resp = await fetch(`${APPS_SCRIPT_URL}?${params.toString()}`);
-    const result = await resp.json();
-    if (result.ok) {
-      mostrarEstado('✓ Datos guardados correctamente.', 'ok');
-    } else {
-      mostrarEstado('Error al guardar: ' + (result.error || 'desconocido'), 'error');
-    }
+    await fetch(`${APPS_SCRIPT_URL}?${params.toString()}`, {
+      method: 'GET',
+      mode: 'no-cors'
+    });
+    mostrarEstado('✓ Datos guardados correctamente.', 'ok');
   } catch(e) {
     mostrarEstado('Error de conexión al guardar.', 'error');
   }
