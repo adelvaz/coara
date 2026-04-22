@@ -144,6 +144,17 @@
   #estado.ok       { display: flex; background: #e8f5ee; color: var(--verde); }
   #estado.error    { display: flex; background: #fdecea; color: var(--rojo); }
 
+  #estado-guardar {
+    padding: 14px 18px;
+    border-radius: 8px;
+    font-size: 0.88rem;
+    font-weight: 500;
+    margin-top: 14px;
+    display: none;
+  }
+  #estado-guardar.ok    { display: block; background: #e8f5ee; color: var(--verde); }
+  #estado-guardar.error { display: block; background: #fdecea; color: var(--rojo); }
+
   #formulario { display: none; }
   #formulario.visible { display: block; }
 
@@ -595,9 +606,9 @@ async function guardarFicha() {
       method: 'GET',
       mode: 'no-cors'
     });
-    mostrarEstado('✓ Datos guardados correctamente.', 'ok');
+    mostrarEstadoGuardar('✓ Datos guardados correctamente.', 'ok');
   } catch(e) {
-    mostrarEstado('Error de conexión al guardar.', 'error');
+    mostrarEstadoGuardar('Error de conexión al guardar.', 'error');
   }
 }
 
@@ -625,6 +636,12 @@ function mostrarEstado(msg, tipo) {
 function ocultarEstado() {
   const el = document.getElementById('estado');
   el.className = ''; el.innerHTML = '';
+}
+  function mostrarEstadoGuardar(msg, tipo) {
+  const el = document.getElementById('estado-guardar');
+  el.className = tipo;
+  el.innerHTML = msg;
+  setTimeout(() => { el.className = ''; el.innerHTML = ''; }, 4000);
 }
 </script>
 </body>
