@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -318,6 +319,58 @@
     .fields { padding: 18px; }
     .action-bar { flex-direction: column-reverse; }
   }
+
+  /* === Matriz de indicadores === */
+  .ind-section { border-bottom: 1px solid var(--gris-borde); }
+  .ind-section:last-child { border-bottom: none; }
+  .ind-cat-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 12px 28px; cursor: pointer; user-select: none;
+    background: var(--azul-claro); color: var(--azul);
+    font-size: 0.8rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase;
+    border-bottom: 1px solid var(--gris-borde);
+  }
+  .ind-cat-header:hover { background: #d5e4f0; }
+  .ind-table-wrap { overflow-x: auto; }
+  .ind-table { width: 100%; border-collapse: collapse; }
+  .ind-table th {
+    padding: 8px 12px; font-size: 0.72rem; font-weight: 600;
+    color: var(--texto-suave); text-align: left;
+    border-bottom: 1px solid var(--gris-borde);
+    background: var(--gris-fondo); white-space: nowrap;
+  }
+  .ind-table td { padding: 7px 12px; border-bottom: 1px solid #edf0f4; vertical-align: middle; }
+  .ind-table tr:last-child td { border-bottom: none; }
+  .ind-table tr:hover td { background: #fafbfd; }
+  .ind-label { font-size: 0.84rem; color: var(--texto); }
+  .ind-otros-input {
+    width: 100%; padding: 5px 10px;
+    border: 1.5px solid var(--gris-borde); border-radius: 6px;
+    font-family: 'DM Sans', sans-serif; font-size: 0.82rem; color: var(--texto);
+  }
+  .ind-otros-input:focus { outline: none; border-color: var(--azul-medio); background: var(--azul-claro); }
+  .pill-group { display: flex; flex-wrap: wrap; gap: 4px; }
+  .pill {
+    padding: 4px 10px; border: 1.5px solid var(--gris-borde); border-radius: 20px;
+    font-size: 0.76rem; font-weight: 500; cursor: pointer;
+    background: var(--blanco); color: var(--texto-suave);
+    transition: all 0.15s; white-space: nowrap; line-height: 1.4;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .pill:hover:not([disabled]) { border-color: var(--azul-medio); color: var(--azul-medio); }
+  .pill[disabled] { opacity: 0.3; cursor: not-allowed; }
+  .pill.sel-si    { border-color: var(--verde);      background: #e8f5ee;           color: var(--verde);       font-weight: 600; }
+  .pill.sel-no    { border-color: #b0b8c4;           background: var(--gris-fondo); color: #8a96a4;            font-weight: 600; }
+  .pill.sel-cuant { border-color: var(--azul);       background: var(--azul-claro); color: var(--azul);        font-weight: 600; }
+  .pill.sel-cual  { border-color: var(--acento);     background: var(--acento-claro); color: var(--acento);    font-weight: 600; }
+  .pill.sel-ambos { border-color: var(--azul-medio); background: var(--azul-claro); color: var(--azul-medio);  font-weight: 600; }
+  .ind-cual {
+    width: 100%; min-width: 120px; padding: 5px 10px;
+    border: 1.5px solid var(--gris-borde); border-radius: 6px;
+    font-family: 'DM Sans', sans-serif; font-size: 0.82rem;
+  }
+  .ind-cual:focus { outline: none; border-color: var(--azul-medio); background: var(--azul-claro); }
+  .ind-cual[disabled] { opacity: 0.3; cursor: not-allowed; background: var(--gris-fondo); }
 </style>
 </head>
 <body>
@@ -501,6 +554,14 @@
       </div>
     </div>
 
+    <div class="form-card">
+      <div class="section-header nuevo">Indicadores y resultados — Nuevas preguntas</div>
+      <p style="padding: 16px 28px 8px; font-size: 0.83rem; color: var(--texto-suave); margin: 0;">
+        Indica para cada ítem si se utiliza en esta iniciativa, cómo se tiene en cuenta y, si aplica, qué indicador cuantitativo se emplea. Haz clic en cada categoría para expandirla.
+      </p>
+      <div id="indicadores-container" style="padding-bottom: 8px;"></div>
+    </div>
+
     <div id="estado-guardar"></div>
     <div class="action-bar">
       <button class="btn-cancelar" onclick="cancelar()">Cancelar</button>
@@ -519,7 +580,226 @@
 <script>
 const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby7ile2vUkl9CLu_RU7JAkOedZACvYMuTUuHY47MIh1eQbcW5AWhIeuZRZeOf2Wd6Tfgw/exec';
 
+const CATS = [
+  { id: 'res', title: 'Resultados de investigación', items: [
+    { id: 'articulos',            label: 'Artículos publicados' },
+    { id: 'libros',               label: 'Libros publicados' },
+    { id: 'capitulos',            label: 'Capítulos de libro publicados' },
+    { id: 'datasets',             label: 'Datasets' },
+    { id: 'software',             label: 'Software' },
+    { id: 'metodologias',         label: 'Metodologías' },
+    { id: 'result_artisticos',    label: 'Resultados artísticos' },
+    { id: 'informes',             label: 'Informes de investigación' },
+    { id: 'acceso_abierto',       label: 'Publicaciones en acceso abierto' },
+    { id: 'conferencias',         label: 'Conferencias' },
+    { id: 'congresos',            label: 'Congresos' },
+    { id: 'patentes',             label: 'Patentes' },
+    { id: 'licencias_patentes',   label: 'Licencias de patentes' },
+    { id: 'extensiones_patentes', label: 'Extensiones de patentes (ej. PCT)' },
+    { id: 'software_protegido',   label: 'Software protegido' },
+    { id: 'empresas_tec',         label: 'Creación o participación en empresas de base tecnológica' },
+    { id: 'otros',                label: null },
+  ]},
+  { id: 'proc', title: 'Proceso de investigación', items: [
+    { id: 'liderazgo_grupos',    label: 'Liderazgo y participación en grupos de investigación' },
+    { id: 'interdisciplinar',    label: 'Trabajo inter o multidisciplinar' },
+    { id: 'integridad',          label: 'Prácticas de integridad en la investigación / RRI' },
+    { id: 'act_editorial',       label: 'Actividad editorial (dirección de revistas, colecciones, etc.)' },
+    { id: 'revision_pares',      label: 'Revisión por pares de investigación' },
+    { id: 'revision_proyectos',  label: 'Revisión por pares de proyectos de investigación' },
+    { id: 'consorcios',          label: 'Construcción de consorcios' },
+    { id: 'financiacion_ext',    label: 'Obtención de financiación externa a la institución' },
+    { id: 'infraestructuras',    label: 'Desarrollo de infraestructuras de investigación' },
+    { id: 'ensayos_clinicos',    label: 'Liderazgo y participación en ensayos clínicos' },
+    { id: 'colab_financiacion',  label: 'Colaboración con departamentos de financiación (becas, proyectos, contratos o convenios)' },
+    { id: 'contratos',           label: 'Contratos y convenios con entidades públicas o privadas' },
+    { id: 'otros',               label: null },
+  ]},
+  { id: 'doc', title: 'Docencia', items: [
+    { id: 'comp_pedagogica',      label: 'Competencia pedagógica' },
+    { id: 'planificar_clases',    label: 'Planificar, ejecutar, evaluar y desarrollar clases y supervisar o evaluar estudiantes' },
+    { id: 'estandares_edu',       label: 'Participación en el desarrollo de estándares educativos en comunidades académicas' },
+    { id: 'mentorizacion',        label: 'Mentorización de estudiantes, profesores o investigadores' },
+    { id: 'materiales_aprend',    label: 'Desarrollar y compartir materiales académicos de aprendizaje' },
+    { id: 'premios_estudiantes',  label: 'Premios de estudiantes tutorizados (excelencia académica, fin de grado, fin de máster, etc.)' },
+    { id: 'dominio_lenguajes',    label: 'Dominio de lenguajes' },
+    { id: 'formacion_transversal',label: 'Formación en habilidades transversales' },
+    { id: 'otros',                label: null },
+  ]},
+  { id: 'imp', title: 'Impacto social e innovación', items: [
+    { id: 'innov_educacion',  label: 'Innovación en educación o investigación' },
+    { id: 'innov_social',     label: 'Innovación social' },
+    { id: 'innov_publica',    label: 'Innovación en el sector público' },
+    { id: 'ciencia_ciudadana',label: 'Investigación utilizando ciencia ciudadana' },
+    { id: 'libros_divulg',    label: 'Elaboración de libros divulgativos' },
+    { id: 'articulos_divulg', label: 'Elaboración de artículos divulgativos' },
+    { id: 'prensa',           label: 'Comunicaciones en prensa y entrevistas' },
+    { id: 'editorial_divulg', label: 'Actividad editorial de obras divulgativas' },
+    { id: 'aplic_publica',    label: 'Aplicación de la investigación en el sector público' },
+    { id: 'otros',            label: null },
+  ]},
+  { id: 'lid', title: 'Liderazgo', items: [
+    { id: 'lid_institucional',  label: 'Liderazgo institucional y departamental' },
+    { id: 'lid_redes',          label: 'Liderazgo de redes académicas y proyectos' },
+    { id: 'lid_fuera_academia', label: 'Liderazgo fuera de la academia' },
+    { id: 'lid_paneles',        label: 'Liderazgo en paneles y comités' },
+    { id: 'lid_investigacion',  label: 'Liderazgo de investigación financiada' },
+    { id: 'lid_contratos',      label: 'Liderazgo en contratos y convenios' },
+    { id: 'otros',              label: null },
+  ]},
+  { id: 'exp', title: 'Otro tipo de experiencias y resultados', items: [
+    { id: 'exp_sectores',        label: 'Experiencia y competencia en sectores fuera de la academia' },
+    { id: 'cursos_ext',          label: 'Cursos y actividades formativas relacionadas con la disciplina fuera del currículo' },
+    { id: 'result_culturales',   label: 'Resultados culturales (exhibiciones, charlas, intervenciones en debates, etc.)' },
+    { id: 'divulgacion',         label: 'Participaciones en actividades de divulgación' },
+    { id: 'org_colegiados',      label: 'Participación en órganos colegiados de la institución' },
+    { id: 'org_gestion',         label: 'Representación en los órganos de gestión de la universidad o institución' },
+    { id: 'cargos_resp',         label: 'Ocupación de cargos de responsabilidad' },
+    { id: 'prog_internos',       label: 'Participación en programas internos (gestión, optimización, organización curricular o de investigación)' },
+    { id: 'asoc_estudiantes',    label: 'Apoyo a o intermediación con asociaciones de estudiantes' },
+    { id: 'voluntariado_org',    label: 'Actividades de voluntariado en organizaciones sin ánimo de lucro' },
+    { id: 'voluntariado_gral',   label: 'Programas de voluntariado en general' },
+    { id: 'otros',               label: null },
+  ]},
+];
+
+function renderIndicadores() {
+  const container = document.getElementById('indicadores-container');
+  let html = '';
+  CATS.forEach(cat => {
+    html += `<div class="ind-section">
+      <div class="ind-cat-header" onclick="toggleCat('${cat.id}')">
+        <span>${cat.title}</span><span id="toggle-${cat.id}">▾</span>
+      </div>
+      <div id="cat-body-${cat.id}" style="display:none">
+        <div class="ind-table-wrap"><table class="ind-table">
+          <thead><tr>
+            <th style="width:38%">Indicador / Resultado</th>
+            <th style="width:13%">¿Se utiliza?</th>
+            <th style="width:30%">¿Cómo se tiene en cuenta?</th>
+            <th style="width:19%">Indicador cuantitativo</th>
+          </tr></thead><tbody>`;
+    cat.items.forEach(item => {
+      const cid = cat.id + '_' + item.id;
+      const nameCell = item.label === null
+        ? `<input type="text" class="ind-otros-input" id="${cid}_nombre" placeholder="Especificar otro indicador...">`
+        : `<span class="ind-label">${item.label}</span>`;
+      html += `<tr>
+        <td>${nameCell}</td>
+        <td><div class="pill-group">
+          <button type="button" class="pill" id="${cid}_si"   onclick="setPill('${cid}','utiliza','Sí')">Sí</button>
+          <button type="button" class="pill" id="${cid}_no"   onclick="setPill('${cid}','utiliza','No')">No</button>
+        </div></td>
+        <td><div class="pill-group">
+          <button type="button" class="pill" id="${cid}_cuant"   onclick="setPill('${cid}','como','Cuantitativo')" disabled>Cuantitativo</button>
+          <button type="button" class="pill" id="${cid}_cual_btn" onclick="setPill('${cid}','como','Cualitativo')"  disabled>Cualitativo</button>
+          <button type="button" class="pill" id="${cid}_ambos"   onclick="setPill('${cid}','como','Ambos')"         disabled>Ambos</button>
+        </div></td>
+        <td><input type="text" class="ind-cual" id="${cid}_cual" placeholder="Especificar..." disabled></td>
+      </tr>`;
+    });
+    html += `</tbody></table></div></div></div>`;
+  });
+  container.innerHTML = html;
+}
+
+function toggleCat(catId) {
+  const body   = document.getElementById('cat-body-' + catId);
+  const toggle = document.getElementById('toggle-' + catId);
+  const isOpen = body.style.display !== 'none';
+  body.style.display = isOpen ? 'none' : '';
+  toggle.textContent = isOpen ? '▾' : '▴';
+}
+
+function setPill(cid, field, value) {
+  if (field === 'utiliza') {
+    const si = document.getElementById(cid + '_si');
+    const no = document.getElementById(cid + '_no');
+    si.className = 'pill' + (value === 'Sí' ? ' sel-si' : '');
+    no.className = 'pill' + (value === 'No' ? ' sel-no' : '');
+    si.dataset.val = value === 'Sí' ? 'Sí' : '';
+    no.dataset.val = value === 'No' ? 'No' : '';
+    const enabled = value === 'Sí';
+    ['_cuant','_cual_btn','_ambos'].forEach(s => {
+      const b = document.getElementById(cid + s);
+      if (b) b.disabled = !enabled;
+    });
+    if (!enabled) {
+      ['_cuant','_cual_btn','_ambos'].forEach(s => {
+        const b = document.getElementById(cid + s);
+        if (b) { b.className = 'pill'; b.dataset.val = ''; }
+      });
+      const ci = document.getElementById(cid + '_cual');
+      if (ci) { ci.disabled = true; ci.value = ''; }
+    }
+  } else {
+    const map = { 'Cuantitativo': '_cuant', 'Cualitativo': '_cual_btn', 'Ambos': '_ambos' };
+    const cls = { 'Cuantitativo': 'sel-cuant', 'Cualitativo': 'sel-cual', 'Ambos': 'sel-ambos' };
+    Object.keys(map).forEach(v => {
+      const b = document.getElementById(cid + map[v]);
+      if (b) { b.className = 'pill' + (v === value ? ' ' + cls[v] : ''); b.dataset.val = v === value ? v : ''; }
+    });
+    const ci = document.getElementById(cid + '_cual');
+    if (ci) {
+      const needsCual = value === 'Cuantitativo' || value === 'Ambos';
+      ci.disabled = !needsCual;
+      if (!needsCual) ci.value = '';
+    }
+  }
+}
+
+function getIndicadores() {
+  const result = {};
+  CATS.forEach(cat => {
+    cat.items.forEach(item => {
+      const cid = cat.id + '_' + item.id;
+      const siBtn    = document.getElementById(cid + '_si');
+      const noBtn    = document.getElementById(cid + '_no');
+      const cuant    = document.getElementById(cid + '_cuant');
+      const cualBtn  = document.getElementById(cid + '_cual_btn');
+      const ambos    = document.getElementById(cid + '_ambos');
+      const cualInp  = document.getElementById(cid + '_cual');
+      const utiliza  = siBtn?.dataset.val === 'Sí' ? 'Sí' : (noBtn?.dataset.val === 'No' ? 'No' : '');
+      const como     = cuant?.dataset.val || cualBtn?.dataset.val || ambos?.dataset.val || '';
+      const cual     = cualInp?.value || '';
+      const entry    = { utiliza, como, cual };
+      if (item.label === null) {
+        const nombreInp = document.getElementById(cid + '_nombre');
+        entry.nombre = nombreInp?.value || '';
+        if (entry.nombre || utiliza || como || cual) result[cid] = entry;
+      } else {
+        if (utiliza || como || cual) result[cid] = entry;
+      }
+    });
+  });
+  return JSON.stringify(result);
+}
+
+function setIndicadores(jsonStr) {
+  if (!jsonStr) return;
+  let data;
+  try { data = typeof jsonStr === 'string' ? JSON.parse(jsonStr) : jsonStr; } catch(e) { return; }
+  CATS.forEach(cat => {
+    cat.items.forEach(item => {
+      const cid = cat.id + '_' + item.id;
+      const d = data[cid];
+      if (!d) return;
+      if (item.label === null && d.nombre) {
+        const n = document.getElementById(cid + '_nombre');
+        if (n) n.value = d.nombre;
+      }
+      if (d.utiliza) setPill(cid, 'utiliza', d.utiliza);
+      if (d.como)    setPill(cid, 'como', d.como);
+      if (d.cual) {
+        const ci = document.getElementById(cid + '_cual');
+        if (ci) ci.value = d.cual;
+      }
+    });
+  });
+}
+
 window.addEventListener('DOMContentLoaded', async () => {
+  renderIndicadores();
   try {
     const resp = await fetch(`${APPS_SCRIPT_URL}?accion=listar`);
     const data = await resp.json();
@@ -569,6 +849,7 @@ function rellenarFormulario(d) {
   marcarRadio('tipo_org', d['Tipo de organización']);
   marcarRadio('objeto',   d['Objeto de evaluación']);
   marcarCheckboxes(['di-inv','di-doc','di-for','di-lid'], d['Dimensiones de evaluación']);
+  setIndicadores(d['Indicadores']);
 }
 
 function marcarRadio(nombre, valor) {
@@ -597,6 +878,7 @@ async function guardarFicha() {
     'Tipo de organización':      getRadio('tipo_org'),
     'Objeto de evaluación':      getRadio('objeto'),
     'Dimensiones de evaluación': getCheckboxes(['di-inv','di-doc','di-for','di-lid']),
+    'Indicadores':               getIndicadores(),
   };
 
   mostrarEstado('Guardando...', 'cargando');
