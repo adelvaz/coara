@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -456,28 +455,6 @@
       <div class="fields">
 
         <div class="field-group">
-          <label>Agente <span class="badge-nuevo">Nuevo</span></label>
-          <div class="radio-group">
-            <div class="radio-option">
-              <input type="radio" name="agente" id="ag-directivo" value="Directivo/a">
-              <label for="ag-directivo">Directivo/a</label>
-            </div>
-            <div class="radio-option">
-              <input type="radio" name="agente" id="ag-evaluador" value="Evaluador/A">
-              <label for="ag-evaluador">Evaluador/A</label>
-            </div>
-            <div class="radio-option">
-              <input type="radio" name="agente" id="ag-tecnico" value="Técnico/a">
-              <label for="ag-tecnico">Técnico/a</label>
-            </div>
-            <div class="radio-option">
-              <input type="radio" name="agente" id="ag-evaluado" value="Evaluado/a">
-              <label for="ag-evaluado">Evaluado/a</label>
-            </div>
-          </div>
-        </div>
-
-        <div class="field-group">
           <label>Tipo de organización <span class="badge-nuevo">Nuevo</span></label>
           <div class="radio-group">
             <div class="radio-option">
@@ -845,7 +822,6 @@ function rellenarFormulario(d) {
   set('metodologias',      d['Metodologías y criterios']);
   set('recursos',          d['Recursos y financiación']);
 
-  marcarRadio('agente',   d['Agente']);
   marcarRadio('tipo_org', d['Tipo de organización']);
   marcarRadio('objeto',   d['Objeto de evaluación']);
   marcarCheckboxes(['di-inv','di-doc','di-for','di-lid'], d['Dimensiones de evaluación']);
@@ -874,7 +850,6 @@ async function guardarFicha() {
     'Ámbitos de evaluación':     document.getElementById('ambitos').value,
     'Metodologías y criterios':  document.getElementById('metodologias').value,
     'Recursos y financiación':   document.getElementById('recursos').value,
-    'Agente':                    getRadio('agente'),
     'Tipo de organización':      getRadio('tipo_org'),
     'Objeto de evaluación':      getRadio('objeto'),
     'Dimensiones de evaluación': getCheckboxes(['di-inv','di-doc','di-for','di-lid']),
