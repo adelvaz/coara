@@ -1,138 +1,1138 @@
-# CoARA Formulario — Contexto del proyecto
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Formulario CoARA — Capítulo Nacional Español</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --azul: #1a3a5c;
+    --azul-medio: #2d5986;
+    --azul-claro: #e8f0f8;
+    --acento: #c8932a;
+    --acento-claro: #fdf3e0;
+    --gris-borde: #d0d9e4;
+    --gris-fondo: #f4f6f9;
+    --texto: #1e2b3a;
+    --texto-suave: #5a6a7a;
+    --blanco: #ffffff;
+    --rojo: #c0392b;
+    --verde: #27ae60;
+  }
 
-## Descripción
+  * { box-sizing: border-box; margin: 0; padding: 0; }
 
-Sistema de edición de fichas institucionales para el mapping de prácticas de evaluación académica del **CoARA Spanish National Chapter**. Permite a cada institución ver, editar y completar su ficha sin necesidad de rellenar un formulario desde cero.
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--gris-fondo);
+    color: var(--texto);
+    min-height: 100vh;
+  }
 
----
+  /* HEADER */
+  header {
+    background: var(--azul);
+    color: white;
+    padding: 20px 40px;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    border-bottom: 4px solid var(--acento);
+  }
+  .header-logo {
+    height: 52px;
+    width: auto;
+    flex-shrink: 0;
+    filter: brightness(0) invert(1);
+  }
+  header .logo-text {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.4rem;
+    line-height: 1.2;
+  }
+  header .logo-text span {
+    display: block;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 300;
+    opacity: 0.75;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-top: 4px;
+  }
+  .header-actions {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-shrink: 0;
+  }
+  .btn-ayuda {
+    color: white;
+    text-decoration: none;
+    border: 1.5px solid rgba(255,255,255,0.45);
+    padding: 7px 16px;
+    border-radius: 20px;
+    font-size: 0.78rem;
+    font-weight: 500;
+    transition: background 0.2s;
+    white-space: nowrap;
+  }
+  .btn-ayuda:hover { background: rgba(255,255,255,0.15); }
+  .coara-badge {
+    background: var(--acento);
+    color: white;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 6px 14px;
+    border-radius: 20px;
+  }
 
-## Arquitectura
+  /* LAYOUT */
+  .container {
+    max-width: 860px;
+    margin: 40px auto;
+    padding: 0 20px 60px;
+  }
 
-| Capa | Tecnología | Ubicación |
-|---|---|---|
-| Frontend | HTML/CSS/JS estático | GitHub Pages: `adelvaz.github.io/coara/formulario_coara.html` |
-| Backend | Google Apps Script (Web App) | Ver URL abajo |
-| Base de datos | Google Sheets | Importado desde `fichas_coara.csv` — hoja llamada `Datos` |
+  /* SELECTOR */
+  .selector-card {
+    background: var(--blanco);
+    border: 1px solid var(--gris-borde);
+    border-radius: 12px;
+    padding: 32px;
+    margin-bottom: 28px;
+    box-shadow: 0 2px 12px rgba(26,58,92,0.07);
+  }
+  .selector-card h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.25rem;
+    color: var(--azul);
+    margin-bottom: 6px;
+  }
+  .selector-card p {
+    font-size: 0.88rem;
+    color: var(--texto-suave);
+    margin-bottom: 20px;
+  }
+  .selector-row {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  select {
+    flex: 1;
+    min-width: 200px;
+    padding: 12px 16px;
+    border: 2px solid var(--gris-borde);
+    border-radius: 8px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    color: var(--texto);
+    background: var(--blanco);
+    cursor: pointer;
+    transition: border-color 0.2s;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%235a6a7a' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    padding-right: 40px;
+  }
+  select:focus { outline: none; border-color: var(--azul-medio); }
 
-**Apps Script URL:**
-```
-https://script.google.com/macros/s/AKfycbwN5NrqUxfys-s3slZXAfk0asRey5Hp87JFo23U0Q3sTP01x3T9P5PIHs8VKjfU5KzpnA/exec
-```
+  .btn-cargar {
+    padding: 12px 24px;
+    background: var(--azul);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+    white-space: nowrap;
+  }
+  .btn-cargar:hover { background: var(--azul-medio); }
 
-**GitHub repo:** `adelvaz/coara`
+  .btn-nueva {
+    padding: 12px 24px;
+    background: var(--acento);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+    white-space: nowrap;
+  }
+  .btn-nueva:hover { background: #b07820; }
 
----
+  /* ESTADO */
+  #estado {
+    padding: 14px 18px;
+    border-radius: 8px;
+    font-size: 0.88rem;
+    font-weight: 500;
+    display: none;
+    margin-top: 14px;
+    align-items: center;
+    gap: 10px;
+  }
+  #estado.cargando { display: flex; background: var(--azul-claro); color: var(--azul); }
+  #estado.ok       { display: flex; background: #e8f5ee; color: var(--verde); }
+  #estado.error    { display: flex; background: #fdecea; color: var(--rojo); }
 
-## Flujo de datos
+  #estado-guardar {
+    padding: 14px 18px;
+    border-radius: 8px;
+    font-size: 0.88rem;
+    font-weight: 500;
+    margin-top: 14px;
+    display: none;
+  }
+  #estado-guardar.ok    { display: block; background: #e8f5ee; color: var(--verde); }
+  #estado-guardar.error { display: block; background: #fdecea; color: var(--rojo); }
 
-1. Al cargar el HTML → GET `?accion=listar` → devuelve lista de instituciones
-2. Usuario selecciona institución → GET `?accion=obtener&institucion=X` → devuelve fila completa como JSON
-3. Usuario edita y guarda → GET `?accion=guardar&datos={...}` con `mode: 'no-cors'`
+  /* FORMULARIO */
+  #formulario { display: none; }
+  #formulario.visible { display: block; }
 
-> **Nota importante:** El guardado usa GET con `mode: 'no-cors'` para evitar el bloqueo CORS de Google Apps Script desde GitHub Pages. Como consecuencia, no se puede leer la respuesta del servidor — se asume éxito si no hay excepción.
+  .form-card {
+    background: var(--blanco);
+    border: 1px solid var(--gris-borde);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(26,58,92,0.07);
+    margin-bottom: 20px;
+  }
+  .section-header {
+    background: var(--azul);
+    color: white;
+    padding: 14px 28px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .section-header.nuevo { background: var(--acento); }
+  .section-header.editor { background: var(--azul-medio); }
 
----
+  .fields {
+    padding: 24px 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .field-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
 
-## Campos del formulario
+  /* LABELS CON TOOLTIP */
+  label {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--azul);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    display: flex;
+    align-items: center;
+    gap: 0;
+  }
+  label .badge-nuevo {
+    display: inline-block;
+    background: var(--acento);
+    color: white;
+    font-size: 0.65rem;
+    padding: 2px 7px;
+    border-radius: 10px;
+    margin-left: 8px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: none;
+  }
+  .help-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 15px;
+    height: 15px;
+    background: var(--azul-claro);
+    color: var(--azul-medio);
+    border: 1.5px solid var(--azul-claro);
+    border-radius: 50%;
+    font-size: 0.65rem;
+    font-weight: 700;
+    cursor: help;
+    margin-left: 6px;
+    flex-shrink: 0;
+    text-transform: none;
+    letter-spacing: 0;
+    transition: background 0.15s;
+  }
+  .help-icon:hover { background: var(--azul-claro); border-color: var(--azul-medio); }
 
-| Campo | Tipo de input | Estado |
-|---|---|---|
-| Institución | Texto | Existente — es el identificador único de cada fila |
-| Nombre de la iniciativa | Texto | Existente |
-| Periodo de implementación | Texto | Existente |
-| Enlace | URL | Existente |
-| Archivo_origen | Texto | Existente |
-| Gobernanza | Textarea | Existente |
-| Descripción de la acción | Textarea | Existente |
-| Ámbitos de evaluación | Textarea | Existente |
-| Metodologías y criterios | Textarea | Existente |
-| Recursos y financiación | Textarea | Existente |
-| Agente | Radio (selección única) | Nuevo |
-| Tipo de organización | Radio (selección única) | Nuevo |
-| Objeto de evaluación | Radio (selección única) | Nuevo |
-| Dimensiones de evaluación | Checkbox (selección múltiple) | Nuevo |
+  /* TOOLTIP BOX */
+  #tooltip-box {
+    position: absolute;
+    background: var(--azul);
+    color: white;
+    padding: 9px 13px;
+    border-radius: 7px;
+    font-size: 0.78rem;
+    font-weight: 400;
+    line-height: 1.5;
+    max-width: 280px;
+    z-index: 9999;
+    display: none;
+    pointer-events: none;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+    text-transform: none;
+    letter-spacing: 0;
+  }
 
-### Opciones de los campos nuevos
+  /* INPUTS */
+  input[type="text"],
+  input[type="url"],
+  input[type="email"],
+  textarea {
+    padding: 11px 14px;
+    border: 2px solid var(--gris-borde);
+    border-radius: 8px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.92rem;
+    color: var(--texto);
+    background: var(--blanco);
+    transition: border-color 0.2s;
+    resize: vertical;
+  }
+  input[type="text"]:focus,
+  input[type="url"]:focus,
+  input[type="email"]:focus,
+  textarea:focus {
+    outline: none;
+    border-color: var(--azul-medio);
+    background: var(--azul-claro);
+  }
+  textarea { min-height: 100px; }
 
-**Agente:** Directivo/a · Evaluador/A · Técnico/a · Evaluado/a
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
 
-**Tipo de organización:** Universidad · Departamento o Instituto · Centro de Investigación · Agencia de Evaluación · Agencia de Financiación
+  /* RADIOS */
+  .radio-group { display: flex; flex-wrap: wrap; gap: 10px; }
+  .radio-option { position: relative; }
+  .radio-option input[type="radio"] { position: absolute; opacity: 0; width: 0; height: 0; }
+  .radio-option label {
+    display: flex; align-items: center; gap: 8px;
+    padding: 9px 18px;
+    border: 2px solid var(--gris-borde);
+    border-radius: 40px;
+    font-size: 0.88rem; font-weight: 500;
+    text-transform: none; letter-spacing: 0;
+    color: var(--texto-suave);
+    cursor: pointer; transition: all 0.18s;
+    background: var(--blanco); white-space: nowrap;
+  }
+  .radio-option input[type="radio"]:checked + label {
+    border-color: var(--azul);
+    background: var(--azul-claro);
+    color: var(--azul); font-weight: 600;
+  }
+  .radio-option label:hover { border-color: var(--azul-medio); color: var(--azul-medio); }
 
-**Objeto de evaluación:** CV individual · Grupo de investigación · Institución · Proyecto de investigación · Política
+  /* CHECKBOXES */
+  .check-group { display: flex; flex-wrap: wrap; gap: 10px; }
+  .check-option { position: relative; }
+  .check-option input[type="checkbox"] { position: absolute; opacity: 0; width: 0; height: 0; }
+  .check-option label {
+    display: flex; align-items: center; gap: 8px;
+    padding: 9px 18px;
+    border: 2px solid var(--gris-borde);
+    border-radius: 40px;
+    font-size: 0.88rem; font-weight: 500;
+    text-transform: none; letter-spacing: 0;
+    color: var(--texto-suave);
+    cursor: pointer; transition: all 0.18s;
+    background: var(--blanco); white-space: nowrap;
+  }
+  .check-option input[type="checkbox"]:checked + label {
+    border-color: var(--azul);
+    background: var(--azul-claro);
+    color: var(--azul); font-weight: 600;
+  }
+  .check-option input[type="checkbox"]:checked + label::before { content: '✓ '; font-weight: 700; }
+  .check-option label:hover { border-color: var(--azul-medio); color: var(--azul-medio); }
 
-**Dimensiones de evaluación:** Investigación · Docencia · Formación · Liderazgo
-*(se guarda como string separado por comas, ej: `"Investigación, Docencia"`)*
+  /* BOTONES ACCIÓN */
+  .action-bar { display: flex; gap: 12px; justify-content: flex-end; margin-top: 28px; }
+  .btn-guardar {
+    padding: 14px 36px;
+    background: var(--acento); color: white;
+    border: none; border-radius: 8px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1rem; font-weight: 700;
+    cursor: pointer; transition: background 0.2s, transform 0.1s;
+    letter-spacing: 0.02em;
+  }
+  .btn-guardar:hover { background: #b07820; transform: translateY(-1px); }
+  .btn-guardar:active { transform: translateY(0); }
+  .btn-cancelar {
+    padding: 14px 24px;
+    background: transparent; color: var(--texto-suave);
+    border: 2px solid var(--gris-borde); border-radius: 8px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem; font-weight: 600;
+    cursor: pointer; transition: all 0.2s;
+  }
+  .btn-cancelar:hover { border-color: var(--texto-suave); color: var(--texto); }
 
----
+  /* SPINNER */
+  .spinner {
+    width: 16px; height: 16px;
+    border: 2px solid rgba(26,58,92,0.2);
+    border-top-color: var(--azul);
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    flex-shrink: 0;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
 
-## Estado actual del proyecto
+  footer { text-align: center; font-size: 0.78rem; color: var(--texto-suave); margin-top: 40px; }
+  footer a { color: var(--azul-medio); text-decoration: none; }
 
-- ✅ Formulario operativo: carga y guarda correctamente
-- ✅ Selector de institución con carga automática de datos
-- ✅ Campos nuevos implementados (radios y checkboxes)
-- ⏳ **Pendiente:** el mensaje de confirmación de guardado aparece arriba del todo (bajo el selector), lejos del botón Guardar — hay que añadir un elemento `#estado-guardar` junto al botón y una función `mostrarEstadoGuardar()` en el JS
+  /* RESPONSIVE */
+  @media (max-width: 600px) {
+    header { padding: 16px 20px; flex-wrap: wrap; }
+    .header-logo { height: 36px; }
+    .two-col { grid-template-columns: 1fr; }
+    .selector-row { flex-direction: column; }
+    .btn-cargar, .btn-nueva { width: 100%; }
+    .fields { padding: 18px; }
+    .action-bar { flex-direction: column-reverse; }
+  }
 
----
+  /* === Matriz de indicadores === */
+  .ind-section { border-bottom: 1px solid var(--gris-borde); }
+  .ind-section:last-child { border-bottom: none; }
+  .ind-cat-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 12px 28px; cursor: pointer; user-select: none;
+    background: var(--azul-claro); color: var(--azul);
+    font-size: 0.8rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase;
+    border-bottom: 1px solid var(--gris-borde);
+  }
+  .ind-cat-header:hover { background: #d5e4f0; }
+  .ind-table-wrap { overflow-x: auto; }
+  .ind-table { width: 100%; border-collapse: collapse; }
+  .ind-table th {
+    padding: 8px 12px; font-size: 0.72rem; font-weight: 600;
+    color: var(--texto-suave); text-align: left;
+    border-bottom: 1px solid var(--gris-borde);
+    background: var(--gris-fondo); white-space: nowrap;
+  }
+  .ind-table td { padding: 7px 12px; border-bottom: 1px solid #edf0f4; vertical-align: middle; }
+  .ind-table tr:last-child td { border-bottom: none; }
+  .ind-table tr:hover td { background: #fafbfd; }
+  .ind-label { font-size: 0.84rem; color: var(--texto); }
+  .ind-otros-input {
+    width: 100%; padding: 5px 10px;
+    border: 1.5px solid var(--gris-borde); border-radius: 6px;
+    font-family: 'DM Sans', sans-serif; font-size: 0.82rem; color: var(--texto);
+  }
+  .ind-otros-input:focus { outline: none; border-color: var(--azul-medio); background: var(--azul-claro); }
+  .pill-group { display: flex; flex-wrap: wrap; gap: 4px; }
+  .pill {
+    padding: 4px 10px; border: 1.5px solid var(--gris-borde); border-radius: 20px;
+    font-size: 0.76rem; font-weight: 500; cursor: pointer;
+    background: var(--blanco); color: var(--texto-suave);
+    transition: all 0.15s; white-space: nowrap; line-height: 1.4;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .pill:hover:not([disabled]) { border-color: var(--azul-medio); color: var(--azul-medio); }
+  .pill[disabled] { opacity: 0.3; cursor: not-allowed; }
+  .pill.sel-si    { border-color: var(--verde);      background: #e8f5ee;           color: var(--verde);       font-weight: 600; }
+  .pill.sel-no    { border-color: #b0b8c4;           background: var(--gris-fondo); color: #8a96a4;            font-weight: 600; }
+  .pill.sel-cuant { border-color: var(--azul);       background: var(--azul-claro); color: var(--azul);        font-weight: 600; }
+  .pill.sel-cual  { border-color: var(--acento);     background: var(--acento-claro); color: var(--acento);    font-weight: 600; }
+  .pill.sel-ambos { border-color: var(--azul-medio); background: var(--azul-claro); color: var(--azul-medio);  font-weight: 600; }
+  .ind-cual {
+    width: 100%; min-width: 120px; padding: 5px 10px;
+    border: 1.5px solid var(--gris-borde); border-radius: 6px;
+    font-family: 'DM Sans', sans-serif; font-size: 0.82rem;
+  }
+  .ind-cual:focus { outline: none; border-color: var(--azul-medio); background: var(--azul-claro); }
+  .ind-cual[disabled] { opacity: 0.3; cursor: not-allowed; background: var(--gris-fondo); }
+</style>
+</head>
+<body>
 
-## Cambio pendiente: mensaje de confirmación junto al botón
+<div id="tooltip-box"></div>
 
-### En el HTML, sustituir:
-```html
-<div class="action-bar">
-  <button class="btn-cancelar" onclick="cancelar()">Cancelar</button>
-  <button class="btn-guardar" onclick="guardarFicha()">💾 Guardar cambios</button>
+<header>
+  <img src="https://www.aneca.es/documents/20123/274082/CoARA_ES_National_Chapter_logo2_sin_fondo.png/90277fd8-699c-21cc-73fb-298b4e576107?t=1769676879860"
+       alt="CoARA España" class="header-logo"
+       onerror="this.style.display='none'">
+  <div class="logo-text">
+    Prácticas de Evaluación Académica
+    <span>CoARA · Capítulo Nacional Español</span>
+  </div>
+  <div class="header-actions">
+    <a href="mailto:adelvaz@bib.upo.es?subject=Consulta%20formulario%20CoARA" class="btn-ayuda">✉ Ayuda / Consultas</a>
+    <div class="coara-badge">Formulario</div>
+  </div>
+</header>
+
+<div class="container">
+
+  <div class="selector-card">
+    <h2>Selecciona tu institución</h2>
+    <p>Elige una iniciativa existente y pulsa <strong>Cargar ficha</strong> para ver y editar sus datos,
+       o pulsa <strong>Nueva ficha</strong> para registrar una iniciativa nueva.</p>
+    <div class="selector-row">
+      <select id="selectInstitucion">
+        <option value="">— Selecciona una iniciativa existente —</option>
+      </select>
+      <button class="btn-cargar" onclick="cargarFicha()">Cargar ficha</button>
+      <button class="btn-nueva" onclick="nuevaFicha()">+ Nueva ficha</button>
+    </div>
+    <div id="estado"></div>
+  </div>
+
+  <div id="formulario">
+
+    <!-- Información general -->
+    <div class="form-card">
+      <div class="section-header">Información general</div>
+      <div class="fields">
+        <div class="field-group">
+          <label for="institucion">Institución
+            <span class="help-icon" data-tip="Nombre completo de la institución que implementa la iniciativa de evaluación.">?</span>
+          </label>
+          <input type="text" id="institucion" placeholder="Nombre de la institución" />
+        </div>
+        <div class="field-group">
+          <label for="nombre_iniciativa">Nombre de la iniciativa
+            <span class="help-icon" data-tip="Denominación oficial o descriptiva de la práctica o iniciativa de evaluación documentada.">?</span>
+          </label>
+          <input type="text" id="nombre_iniciativa" placeholder="Nombre de la iniciativa" />
+        </div>
+        <div class="two-col">
+          <div class="field-group">
+            <label for="periodo">Periodo de implementación
+              <span class="help-icon" data-tip="Fecha o rango temporal en que se aplica o ha aplicado la iniciativa (ej. 2022–2024, desde enero 2023).">?</span>
+            </label>
+            <input type="text" id="periodo" placeholder="Ej. Desde enero 2023" />
+          </div>
+          <div class="field-group">
+            <label for="enlace">Enlace
+              <span class="help-icon" data-tip="URL donde se puede consultar más información sobre la iniciativa (si existe documentación pública).">?</span>
+            </label>
+            <input type="url" id="enlace" placeholder="https://..." />
+          </div>
+        </div>
+        <div class="field-group">
+          <label for="archivo_origen">Archivo origen
+            <span class="help-icon" data-tip="Referencia al documento fuente del que procede esta ficha, si la hubiera. Dejar en blanco si la ficha se ha creado directamente en el formulario.">?</span>
+          </label>
+          <input type="text" id="archivo_origen" placeholder="Nombre del archivo (opcional)" />
+        </div>
+      </div>
+    </div>
+
+    <!-- Descripción -->
+    <div class="form-card">
+      <div class="section-header">Descripción de la iniciativa</div>
+      <div class="fields">
+        <div class="field-group">
+          <label for="gobernanza">Gobernanza
+            <span class="help-icon" data-tip="Órgano, comité o estructura responsable de diseñar, aprobar o supervisar esta iniciativa de evaluación.">?</span>
+          </label>
+          <textarea id="gobernanza" rows="4" placeholder="Órgano o estructura responsable de la iniciativa..."></textarea>
+        </div>
+        <div class="field-group">
+          <label for="descripcion">Descripción de la acción
+            <span class="help-icon" data-tip="Explicación detallada de en qué consiste la iniciativa, cómo se desarrolla y cuál es su objetivo principal.">?</span>
+          </label>
+          <textarea id="descripcion" rows="6" placeholder="Descripción detallada de la acción..."></textarea>
+        </div>
+        <div class="field-group">
+          <label for="ambitos">Ámbitos de evaluación
+            <span class="help-icon" data-tip="Dimensiones o áreas de actividad académica que cubre esta práctica evaluadora (investigación, docencia, transferencia, etc.).">?</span>
+          </label>
+          <textarea id="ambitos" rows="4" placeholder="Ámbitos o dominios de evaluación cubiertos..."></textarea>
+        </div>
+        <div class="field-group">
+          <label for="metodologias">Metodologías y criterios
+            <span class="help-icon" data-tip="Procedimientos, indicadores o baremos utilizados para llevar a cabo la evaluación en el marco de esta iniciativa.">?</span>
+          </label>
+          <textarea id="metodologias" rows="4" placeholder="Metodologías y criterios aplicados..."></textarea>
+        </div>
+        <div class="field-group">
+          <label for="recursos">Recursos y financiación
+            <span class="help-icon" data-tip="Medios humanos, técnicos o económicos empleados para llevar a cabo la iniciativa, y el origen de su financiación.">?</span>
+          </label>
+          <textarea id="recursos" rows="3" placeholder="Recursos humanos, técnicos y financiación..."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- Clasificación -->
+    <div class="form-card">
+      <div class="section-header nuevo">Clasificación</div>
+      <div class="fields">
+
+        <div class="field-group">
+          <label>Tipo de organización
+            <span class="badge-nuevo">Nuevo</span>
+            <span class="help-icon" data-tip="Categoría institucional a la que pertenece la organización que implementa esta iniciativa de evaluación.">?</span>
+          </label>
+          <div class="radio-group">
+            <div class="radio-option"><input type="radio" name="tipo_org" id="to-univ" value="Universidad"><label for="to-univ">Universidad</label></div>
+            <div class="radio-option"><input type="radio" name="tipo_org" id="to-dpto" value="Departamento o Instituto"><label for="to-dpto">Departamento o Instituto</label></div>
+            <div class="radio-option"><input type="radio" name="tipo_org" id="to-centro" value="Centro de Investigación"><label for="to-centro">Centro de Investigación</label></div>
+            <div class="radio-option"><input type="radio" name="tipo_org" id="to-ageval" value="Agencia de Evaluación"><label for="to-ageval">Agencia de Evaluación</label></div>
+            <div class="radio-option"><input type="radio" name="tipo_org" id="to-agfin" value="Agencia de Financiación"><label for="to-agfin">Agencia de Financiación</label></div>
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label>Objeto de evaluación
+            <span class="badge-nuevo">Nuevo</span>
+            <span class="help-icon" data-tip="Qué o quién es objeto de evaluación en el marco de esta iniciativa: un investigador, un grupo, una institución, un proyecto o una política.">?</span>
+          </label>
+          <div class="radio-group">
+            <div class="radio-option"><input type="radio" name="objeto" id="ob-cv" value="CV individual"><label for="ob-cv">CV individual</label></div>
+            <div class="radio-option"><input type="radio" name="objeto" id="ob-grupo" value="Grupo de investigación"><label for="ob-grupo">Grupo de investigación</label></div>
+            <div class="radio-option"><input type="radio" name="objeto" id="ob-inst" value="Institución"><label for="ob-inst">Institución</label></div>
+            <div class="radio-option"><input type="radio" name="objeto" id="ob-proy" value="Proyecto de investigación"><label for="ob-proy">Proyecto de investigación</label></div>
+            <div class="radio-option"><input type="radio" name="objeto" id="ob-pol" value="Política"><label for="ob-pol">Política</label></div>
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label>Dimensiones de evaluación
+            <span class="badge-nuevo">Nuevo</span>
+            <span class="help-icon" data-tip="Facetas de la actividad académica que se tienen en cuenta en la evaluación. Se pueden marcar varias.">?</span>
+          </label>
+          <div class="check-group">
+            <div class="check-option"><input type="checkbox" id="di-inv" value="Investigación"><label for="di-inv">Investigación</label></div>
+            <div class="check-option"><input type="checkbox" id="di-doc" value="Docencia"><label for="di-doc">Docencia</label></div>
+            <div class="check-option"><input type="checkbox" id="di-for" value="Formación"><label for="di-for">Formación</label></div>
+            <div class="check-option"><input type="checkbox" id="di-lid" value="Liderazgo"><label for="di-lid">Liderazgo</label></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Indicadores -->
+    <div class="form-card">
+      <div class="section-header nuevo">Indicadores y resultados — Nuevas preguntas</div>
+      <p style="padding: 16px 28px 8px; font-size: 0.83rem; color: var(--texto-suave); margin: 0;">
+        Indica para cada ítem si se utiliza en esta iniciativa, cómo se tiene en cuenta y, si aplica, qué indicador cuantitativo se emplea. Haz clic en cada categoría para expandirla.
+      </p>
+      <div id="indicadores-container" style="padding-bottom: 8px;"></div>
+    </div>
+
+    <!-- Observaciones -->
+    <div class="form-card">
+      <div class="section-header">Observaciones</div>
+      <div class="fields">
+        <div class="field-group">
+          <label for="observaciones">Observaciones
+            <span class="help-icon" data-tip="Cualquier información adicional relevante sobre la iniciativa que no encaje en los campos anteriores.">?</span>
+          </label>
+          <textarea id="observaciones" rows="4" placeholder="Información adicional, aclaraciones, contexto complementario..."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- Datos del editor -->
+    <div class="form-card">
+      <div class="section-header editor">Datos de quien cumplimenta el formulario</div>
+      <div class="fields">
+        <div class="two-col">
+          <div class="field-group">
+            <label for="nombre_editor">Nombre
+              <span class="help-icon" data-tip="Nombre completo de la persona que está rellenando o actualizando este formulario.">?</span>
+            </label>
+            <input type="text" id="nombre_editor" placeholder="Nombre y apellidos" />
+          </div>
+          <div class="field-group">
+            <label for="email_editor">Email de contacto
+              <span class="help-icon" data-tip="Dirección de correo electrónico de contacto. Si marcas la opción de recibir copia, el resumen se enviará a esta dirección.">?</span>
+            </label>
+            <input type="email" id="email_editor" placeholder="correo@institucion.es" />
+          </div>
+        </div>
+        <div class="field-group">
+          <label>Recibir resumen por correo
+            <span class="help-icon" data-tip="Si lo marcas, recibirás en tu correo electrónico un resumen de la ficha guardada. El resumen se enviará siempre al equipo coordinador.">?</span>
+          </label>
+          <div class="check-group">
+            <div class="check-option">
+              <input type="checkbox" id="enviar_copia">
+              <label for="enviar_copia">Sí, quiero recibir una copia del resumen en mi correo</label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="estado-guardar"></div>
+    <div class="action-bar">
+      <button class="btn-cancelar" onclick="cancelar()">Cancelar</button>
+      <button class="btn-guardar" onclick="guardarFicha()">💾 Guardar</button>
+    </div>
+
+  </div><!-- fin #formulario -->
+
+  <footer>
+    Mapping Institutional Approaches to Research Assessment Reform · CoARA Spanish National Chapter<br>
+    <a href="https://coara.eu" target="_blank">coara.eu</a>
+  </footer>
+
 </div>
-```
-Por:
-```html
-<div id="estado-guardar"></div>
-<div class="action-bar">
-  <button class="btn-cancelar" onclick="cancelar()">Cancelar</button>
-  <button class="btn-guardar" onclick="guardarFicha()">💾 Guardar cambios</button>
-</div>
-```
 
-### CSS a añadir:
-```css
-#estado-guardar {
-  padding: 14px 18px;
-  border-radius: 8px;
-  font-size: 0.88rem;
-  font-weight: 500;
-  margin-top: 14px;
-  display: none;
-}
-#estado-guardar.ok    { display: block; background: #e8f5ee; color: #27ae60; }
-#estado-guardar.error { display: block; background: #fdecea; color: #c0392b; }
-```
+<script>
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby7ile2vUkl9CLu_RU7JAkOedZACvYMuTUuHY47MIh1eQbcW5AWhIeuZRZeOf2Wd6Tfgw/exec';
 
-### En JS, dentro de `guardarFicha()`, sustituir:
-```javascript
-mostrarEstado('✓ Datos guardados correctamente.', 'ok');
-} catch(e) {
-mostrarEstado('Error de conexión al guardar.', 'error');
-}
-```
-Por:
-```javascript
-mostrarEstadoGuardar('✓ Datos guardados correctamente.', 'ok');
-} catch(e) {
-mostrarEstadoGuardar('Error de conexión al guardar.', 'error');
-}
-```
+let currentFila = null;
 
-### Función nueva a añadir al JS:
-```javascript
+// ── Tooltip ──────────────────────────────────────────────────────────────────
+const tooltipEl = document.getElementById('tooltip-box');
+document.addEventListener('mouseover', e => {
+  const icon = e.target.closest('.help-icon');
+  if (!icon || !icon.dataset.tip) return;
+  tooltipEl.textContent = icon.dataset.tip;
+  tooltipEl.style.display = 'block';
+});
+document.addEventListener('mousemove', e => {
+  if (tooltipEl.style.display !== 'block') return;
+  const x = Math.min(e.pageX + 14, window.innerWidth + window.scrollX - 300);
+  tooltipEl.style.left = x + 'px';
+  tooltipEl.style.top  = (e.pageY + 18) + 'px';
+});
+document.addEventListener('mouseout', e => {
+  if (e.target.closest('.help-icon')) tooltipEl.style.display = 'none';
+});
+
+// ── Datos categorías indicadores ─────────────────────────────────────────────
+const CATS = [
+  { id: 'res', title: 'Resultados de investigación', items: [
+    { id: 'articulos',            label: 'Artículos publicados' },
+    { id: 'libros',               label: 'Libros publicados' },
+    { id: 'capitulos',            label: 'Capítulos de libro publicados' },
+    { id: 'datasets',             label: 'Datasets' },
+    { id: 'software',             label: 'Software' },
+    { id: 'metodologias',         label: 'Metodologías' },
+    { id: 'result_artisticos',    label: 'Resultados artísticos' },
+    { id: 'informes',             label: 'Informes de investigación' },
+    { id: 'acceso_abierto',       label: 'Publicaciones en acceso abierto' },
+    { id: 'conferencias',         label: 'Conferencias' },
+    { id: 'congresos',            label: 'Congresos' },
+    { id: 'patentes',             label: 'Patentes' },
+    { id: 'licencias_patentes',   label: 'Licencias de patentes' },
+    { id: 'extensiones_patentes', label: 'Extensiones de patentes (ej. PCT)' },
+    { id: 'software_protegido',   label: 'Software protegido' },
+    { id: 'empresas_tec',         label: 'Creación o participación en empresas de base tecnológica' },
+    { id: 'otros',                label: null },
+  ]},
+  { id: 'proc', title: 'Proceso de investigación', items: [
+    { id: 'liderazgo_grupos',    label: 'Liderazgo y participación en grupos de investigación' },
+    { id: 'interdisciplinar',    label: 'Trabajo inter o multidisciplinar' },
+    { id: 'integridad',          label: 'Prácticas de integridad en la investigación / RRI' },
+    { id: 'act_editorial',       label: 'Actividad editorial (dirección de revistas, colecciones, etc.)' },
+    { id: 'revision_pares',      label: 'Revisión por pares de investigación' },
+    { id: 'revision_proyectos',  label: 'Revisión por pares de proyectos de investigación' },
+    { id: 'consorcios',          label: 'Construcción de consorcios' },
+    { id: 'financiacion_ext',    label: 'Obtención de financiación externa a la institución' },
+    { id: 'infraestructuras',    label: 'Desarrollo de infraestructuras de investigación' },
+    { id: 'ensayos_clinicos',    label: 'Liderazgo y participación en ensayos clínicos' },
+    { id: 'colab_financiacion',  label: 'Colaboración con departamentos de financiación (becas, proyectos, contratos o convenios)' },
+    { id: 'contratos',           label: 'Contratos y convenios con entidades públicas o privadas' },
+    { id: 'otros',               label: null },
+  ]},
+  { id: 'doc', title: 'Docencia', items: [
+    { id: 'comp_pedagogica',      label: 'Competencia pedagógica' },
+    { id: 'planificar_clases',    label: 'Planificar, ejecutar, evaluar y desarrollar clases y supervisar o evaluar estudiantes' },
+    { id: 'estandares_edu',       label: 'Participación en el desarrollo de estándares educativos en comunidades académicas' },
+    { id: 'mentorizacion',        label: 'Mentorización de estudiantes, profesores o investigadores' },
+    { id: 'materiales_aprend',    label: 'Desarrollar y compartir materiales académicos de aprendizaje' },
+    { id: 'premios_estudiantes',  label: 'Premios de estudiantes tutorizados (excelencia académica, fin de grado, fin de máster, etc.)' },
+    { id: 'dominio_lenguajes',    label: 'Dominio de lenguajes' },
+    { id: 'formacion_transversal',label: 'Formación en habilidades transversales' },
+    { id: 'otros',                label: null },
+  ]},
+  { id: 'imp', title: 'Impacto social e innovación', items: [
+    { id: 'innov_educacion',  label: 'Innovación en educación o investigación' },
+    { id: 'innov_social',     label: 'Innovación social' },
+    { id: 'innov_publica',    label: 'Innovación en el sector público' },
+    { id: 'ciencia_ciudadana',label: 'Investigación utilizando ciencia ciudadana' },
+    { id: 'libros_divulg',    label: 'Elaboración de libros divulgativos' },
+    { id: 'articulos_divulg', label: 'Elaboración de artículos divulgativos' },
+    { id: 'prensa',           label: 'Comunicaciones en prensa y entrevistas' },
+    { id: 'editorial_divulg', label: 'Actividad editorial de obras divulgativas' },
+    { id: 'aplic_publica',    label: 'Aplicación de la investigación en el sector público' },
+    { id: 'otros',            label: null },
+  ]},
+  { id: 'lid', title: 'Liderazgo', items: [
+    { id: 'lid_institucional',  label: 'Liderazgo institucional y departamental' },
+    { id: 'lid_redes',          label: 'Liderazgo de redes académicas y proyectos' },
+    { id: 'lid_fuera_academia', label: 'Liderazgo fuera de la academia' },
+    { id: 'lid_paneles',        label: 'Liderazgo en paneles y comités' },
+    { id: 'lid_investigacion',  label: 'Liderazgo de investigación financiada' },
+    { id: 'lid_contratos',      label: 'Liderazgo en contratos y convenios' },
+    { id: 'otros',              label: null },
+  ]},
+  { id: 'exp', title: 'Otro tipo de experiencias y resultados', items: [
+    { id: 'exp_sectores',        label: 'Experiencia y competencia en sectores fuera de la academia' },
+    { id: 'cursos_ext',          label: 'Cursos y actividades formativas relacionadas con la disciplina fuera del currículo' },
+    { id: 'result_culturales',   label: 'Resultados culturales (exhibiciones, charlas, intervenciones en debates, etc.)' },
+    { id: 'divulgacion',         label: 'Participaciones en actividades de divulgación' },
+    { id: 'org_colegiados',      label: 'Participación en órganos colegiados de la institución' },
+    { id: 'org_gestion',         label: 'Representación en los órganos de gestión de la universidad o institución' },
+    { id: 'cargos_resp',         label: 'Ocupación de cargos de responsabilidad' },
+    { id: 'prog_internos',       label: 'Participación en programas internos (gestión, optimización, organización curricular o de investigación)' },
+    { id: 'asoc_estudiantes',    label: 'Apoyo a o intermediación con asociaciones de estudiantes' },
+    { id: 'voluntariado_org',    label: 'Actividades de voluntariado en organizaciones sin ánimo de lucro' },
+    { id: 'voluntariado_gral',   label: 'Programas de voluntariado en general' },
+    { id: 'otros',               label: null },
+  ]},
+];
+
+// ── Render indicadores ────────────────────────────────────────────────────────
+function renderIndicadores() {
+  const container = document.getElementById('indicadores-container');
+  let html = '';
+  CATS.forEach(cat => {
+    html += `<div class="ind-section">
+      <div class="ind-cat-header" onclick="toggleCat('${cat.id}')">
+        <span>${cat.title}</span><span id="toggle-${cat.id}">▾</span>
+      </div>
+      <div id="cat-body-${cat.id}" style="display:none">
+        <div class="ind-table-wrap"><table class="ind-table">
+          <thead><tr>
+            <th style="width:38%">Indicador / Resultado</th>
+            <th style="width:13%">¿Se utiliza?</th>
+            <th style="width:30%">¿Cómo se tiene en cuenta?</th>
+            <th style="width:19%">Indicador cuantitativo</th>
+          </tr></thead><tbody>`;
+    cat.items.forEach(item => {
+      const cid = cat.id + '_' + item.id;
+      const nameCell = item.label === null
+        ? `<input type="text" class="ind-otros-input" id="${cid}_nombre" placeholder="Especificar otro indicador...">`
+        : `<span class="ind-label">${item.label}</span>`;
+      html += `<tr>
+        <td>${nameCell}</td>
+        <td><div class="pill-group">
+          <button type="button" class="pill" id="${cid}_si"   onclick="setPill('${cid}','utiliza','Sí')">Sí</button>
+          <button type="button" class="pill" id="${cid}_no"   onclick="setPill('${cid}','utiliza','No')">No</button>
+        </div></td>
+        <td><div class="pill-group">
+          <button type="button" class="pill" id="${cid}_cuant"    onclick="setPill('${cid}','como','Cuantitativo')" disabled>Cuantitativo</button>
+          <button type="button" class="pill" id="${cid}_cual_btn" onclick="setPill('${cid}','como','Cualitativo')"  disabled>Cualitativo</button>
+          <button type="button" class="pill" id="${cid}_ambos"    onclick="setPill('${cid}','como','Ambos')"        disabled>Ambos</button>
+        </div></td>
+        <td><input type="text" class="ind-cual" id="${cid}_cual" placeholder="Especificar..." disabled></td>
+      </tr>`;
+    });
+    html += `</tbody></table></div></div></div>`;
+  });
+  container.innerHTML = html;
+}
+
+function toggleCat(catId) {
+  const body   = document.getElementById('cat-body-' + catId);
+  const toggle = document.getElementById('toggle-' + catId);
+  const isOpen = body.style.display !== 'none';
+  body.style.display = isOpen ? 'none' : '';
+  toggle.textContent = isOpen ? '▾' : '▴';
+}
+
+function setPill(cid, field, value) {
+  if (field === 'utiliza') {
+    const si = document.getElementById(cid + '_si');
+    const no = document.getElementById(cid + '_no');
+    si.className = 'pill' + (value === 'Sí' ? ' sel-si' : '');
+    no.className = 'pill' + (value === 'No' ? ' sel-no' : '');
+    si.dataset.val = value === 'Sí' ? 'Sí' : '';
+    no.dataset.val = value === 'No' ? 'No' : '';
+    const enabled = value === 'Sí';
+    ['_cuant','_cual_btn','_ambos'].forEach(s => {
+      const b = document.getElementById(cid + s);
+      if (b) b.disabled = !enabled;
+    });
+    if (!enabled) {
+      ['_cuant','_cual_btn','_ambos'].forEach(s => {
+        const b = document.getElementById(cid + s);
+        if (b) { b.className = 'pill'; b.dataset.val = ''; }
+      });
+      const ci = document.getElementById(cid + '_cual');
+      if (ci) { ci.disabled = true; ci.value = ''; }
+    }
+  } else {
+    const map = { 'Cuantitativo': '_cuant', 'Cualitativo': '_cual_btn', 'Ambos': '_ambos' };
+    const cls = { 'Cuantitativo': 'sel-cuant', 'Cualitativo': 'sel-cual', 'Ambos': 'sel-ambos' };
+    Object.keys(map).forEach(v => {
+      const b = document.getElementById(cid + map[v]);
+      if (b) { b.className = 'pill' + (v === value ? ' ' + cls[v] : ''); b.dataset.val = v === value ? v : ''; }
+    });
+    const ci = document.getElementById(cid + '_cual');
+    if (ci) {
+      const needsCual = value === 'Cuantitativo' || value === 'Ambos';
+      ci.disabled = !needsCual;
+      if (!needsCual) ci.value = '';
+    }
+  }
+}
+
+function getIndicadores() {
+  const result = {};
+  CATS.forEach(cat => {
+    cat.items.forEach(item => {
+      const cid = cat.id + '_' + item.id;
+      const siBtn   = document.getElementById(cid + '_si');
+      const noBtn   = document.getElementById(cid + '_no');
+      const cuant   = document.getElementById(cid + '_cuant');
+      const cualBtn = document.getElementById(cid + '_cual_btn');
+      const ambos   = document.getElementById(cid + '_ambos');
+      const cualInp = document.getElementById(cid + '_cual');
+      const utiliza = siBtn?.dataset.val === 'Sí' ? 'Sí' : (noBtn?.dataset.val === 'No' ? 'No' : '');
+      const como    = cuant?.dataset.val || cualBtn?.dataset.val || ambos?.dataset.val || '';
+      const cual    = cualInp?.value || '';
+      const entry   = { utiliza, como, cual };
+      if (item.label === null) {
+        const n = document.getElementById(cid + '_nombre');
+        entry.nombre = n?.value || '';
+        if (entry.nombre || utiliza || como || cual) result[cid] = entry;
+      } else {
+        if (utiliza || como || cual) result[cid] = entry;
+      }
+    });
+  });
+  return JSON.stringify(result);
+}
+
+function setIndicadores(jsonStr) {
+  if (!jsonStr) return;
+  let data;
+  try { data = typeof jsonStr === 'string' ? JSON.parse(jsonStr) : jsonStr; } catch(e) { return; }
+  CATS.forEach(cat => {
+    cat.items.forEach(item => {
+      const cid = cat.id + '_' + item.id;
+      const d = data[cid];
+      if (!d) return;
+      if (item.label === null && d.nombre) {
+        const n = document.getElementById(cid + '_nombre');
+        if (n) n.value = d.nombre;
+      }
+      if (d.utiliza) setPill(cid, 'utiliza', d.utiliza);
+      if (d.como)    setPill(cid, 'como', d.como);
+      if (d.cual) {
+        const ci = document.getElementById(cid + '_cual');
+        if (ci) ci.value = d.cual;
+      }
+    });
+  });
+}
+
+// ── Init ──────────────────────────────────────────────────────────────────────
+window.addEventListener('DOMContentLoaded', async () => {
+  renderIndicadores();
+  await recargarLista();
+});
+
+async function recargarLista() {
+  try {
+    const resp = await fetch(`${APPS_SCRIPT_URL}?accion=listar`);
+    const data = await resp.json();
+    const sel = document.getElementById('selectInstitucion');
+    while (sel.options.length > 1) sel.remove(1);
+    (data.fichas || []).forEach(f => {
+      const opt = document.createElement('option');
+      opt.value = f.id;
+      opt.textContent = f.label;
+      sel.appendChild(opt);
+    });
+  } catch(e) {
+    mostrarEstado('No se pudo cargar la lista de iniciativas.', 'error');
+  }
+}
+
+// ── Cargar ficha existente ────────────────────────────────────────────────────
+async function cargarFicha() {
+  const fila = document.getElementById('selectInstitucion').value;
+  if (!fila) { mostrarEstado('Por favor, selecciona una iniciativa.', 'error'); return; }
+  mostrarEstado('Cargando datos...', 'cargando');
+  try {
+    const resp = await fetch(`${APPS_SCRIPT_URL}?accion=obtener&fila=${encodeURIComponent(fila)}`);
+    const d = await resp.json();
+    currentFila = fila;
+    rellenarFormulario(d);
+    document.getElementById('formulario').classList.add('visible');
+    mostrarEstado(`Ficha cargada correctamente.`, 'ok');
+    setTimeout(() => ocultarEstado(), 3000);
+    document.getElementById('formulario').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  } catch(e) {
+    mostrarEstado('Error al cargar los datos. Inténtalo de nuevo.', 'error');
+  }
+}
+
+// ── Nueva ficha ───────────────────────────────────────────────────────────────
+function nuevaFicha() {
+  currentFila = null;
+  limpiarFormulario();
+  document.getElementById('selectInstitucion').value = '';
+  document.getElementById('formulario').classList.add('visible');
+  document.getElementById('formulario').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  setTimeout(() => document.getElementById('institucion').focus(), 400);
+}
+
+function limpiarFormulario() {
+  ['institucion','nombre_iniciativa','periodo','enlace','archivo_origen',
+   'gobernanza','descripcion','ambitos','metodologias','recursos',
+   'observaciones','nombre_editor','email_editor'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = '';
+  });
+  document.querySelectorAll('#formulario input[type="radio"]').forEach(r => r.checked = false);
+  document.querySelectorAll('#formulario input[type="checkbox"]').forEach(c => c.checked = false);
+  CATS.forEach(cat => cat.items.forEach(item => {
+    const cid = cat.id + '_' + item.id;
+    ['_si','_no','_cuant','_cual_btn','_ambos'].forEach(s => {
+      const b = document.getElementById(cid + s);
+      if (b) { b.className = 'pill'; b.dataset.val = ''; if (s !== '_si' && s !== '_no') b.disabled = true; }
+    });
+    const ci = document.getElementById(cid + '_cual');
+    if (ci) { ci.value = ''; ci.disabled = true; }
+    if (item.label === null) {
+      const n = document.getElementById(cid + '_nombre');
+      if (n) n.value = '';
+    }
+  }));
+}
+
+// ── Rellenar formulario ───────────────────────────────────────────────────────
+function rellenarFormulario(d) {
+  const set = (id, val) => { const el = document.getElementById(id); if (el) el.value = val || ''; };
+  set('institucion',       d['Institución']);
+  set('nombre_iniciativa', d['Nombre de la iniciativa']);
+  set('periodo',           d['Periodo de implementación']);
+  set('enlace',            d['Enlace']);
+  set('archivo_origen',    d['Archivo_origen']);
+  set('gobernanza',        d['Gobernanza']);
+  set('descripcion',       d['Descripción de la acción']);
+  set('ambitos',           d['Ámbitos de evaluación']);
+  set('metodologias',      d['Metodologías y criterios']);
+  set('recursos',          d['Recursos y financiación']);
+  set('observaciones',     d['Observaciones']);
+  set('nombre_editor',     d['Nombre_editor']);
+  set('email_editor',      d['Email_editor']);
+  marcarRadio('tipo_org', d['Tipo de organización']);
+  marcarRadio('objeto',   d['Objeto de evaluación']);
+  marcarCheckboxes(['di-inv','di-doc','di-for','di-lid'], d['Dimensiones de evaluación']);
+  setIndicadores(d['Indicadores']);
+}
+
+function marcarRadio(nombre, valor) {
+  if (!valor) return;
+  document.querySelectorAll(`input[name="${nombre}"]`).forEach(r => { r.checked = (r.value === valor); });
+}
+
+function marcarCheckboxes(ids, valor) {
+  const valores = valor ? valor.split(',').map(v => v.trim()) : [];
+  ids.forEach(id => { const el = document.getElementById(id); if (el) el.checked = valores.includes(el.value); });
+}
+
+// ── Guardar ───────────────────────────────────────────────────────────────────
+async function guardarFicha() {
+  const inst = document.getElementById('institucion').value.trim();
+  if (!inst) {
+    mostrarEstadoGuardar('Por favor, introduce el nombre de la institución antes de guardar.', 'error');
+    return;
+  }
+
+  const datos = {
+    '_fila':                     currentFila,
+    '_enviar_copia':             document.getElementById('enviar_copia').checked ? 'Sí' : 'No',
+    'Institución':               inst,
+    'Nombre de la iniciativa':   document.getElementById('nombre_iniciativa').value,
+    'Periodo de implementación': document.getElementById('periodo').value,
+    'Enlace':                    document.getElementById('enlace').value,
+    'Archivo_origen':            document.getElementById('archivo_origen').value,
+    'Gobernanza':                document.getElementById('gobernanza').value,
+    'Descripción de la acción':  document.getElementById('descripcion').value,
+    'Ámbitos de evaluación':     document.getElementById('ambitos').value,
+    'Metodologías y criterios':  document.getElementById('metodologias').value,
+    'Recursos y financiación':   document.getElementById('recursos').value,
+    'Tipo de organización':      getRadio('tipo_org'),
+    'Objeto de evaluación':      getRadio('objeto'),
+    'Dimensiones de evaluación': getCheckboxes(['di-inv','di-doc','di-for','di-lid']),
+    'Indicadores':               getIndicadores(),
+    'Observaciones':             document.getElementById('observaciones').value,
+    'Nombre_editor':             document.getElementById('nombre_editor').value,
+    'Email_editor':              document.getElementById('email_editor').value,
+  };
+
+  mostrarEstado('Guardando...', 'cargando');
+  try {
+    const params = new URLSearchParams({ accion: 'guardar', datos: JSON.stringify(datos) });
+    await fetch(`${APPS_SCRIPT_URL}?${params.toString()}`, { method: 'GET', mode: 'no-cors' });
+    const envio = document.getElementById('enviar_copia').checked ? ' Se enviará un resumen a tu correo.' : '';
+    mostrarEstadoGuardar(`✓ Datos guardados correctamente.${envio}`, 'ok');
+    ocultarEstado();
+    if (!currentFila) {
+      setTimeout(recargarLista, 2500);
+    }
+  } catch(e) {
+    mostrarEstadoGuardar('Error de conexión al guardar. Inténtalo de nuevo.', 'error');
+    ocultarEstado();
+  }
+}
+
+function getRadio(nombre) {
+  const sel = document.querySelector(`input[name="${nombre}"]:checked`);
+  return sel ? sel.value : '';
+}
+
+function getCheckboxes(ids) {
+  return ids.map(id => document.getElementById(id)).filter(el => el && el.checked).map(el => el.value).join(', ');
+}
+
+// ── Cancelar ──────────────────────────────────────────────────────────────────
+function cancelar() {
+  currentFila = null;
+  document.getElementById('formulario').classList.remove('visible');
+  document.getElementById('selectInstitucion').value = '';
+  ocultarEstado();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ── Estado ────────────────────────────────────────────────────────────────────
+function mostrarEstado(msg, tipo) {
+  const el = document.getElementById('estado');
+  el.className = tipo;
+  el.innerHTML = tipo === 'cargando' ? `<div class="spinner"></div> ${msg}` : msg;
+}
+function ocultarEstado() {
+  const el = document.getElementById('estado');
+  el.className = ''; el.innerHTML = '';
+}
 function mostrarEstadoGuardar(msg, tipo) {
   const el = document.getElementById('estado-guardar');
   el.className = tipo;
   el.innerHTML = msg;
-  setTimeout(() => { el.className = ''; el.innerHTML = ''; }, 4000);
+  setTimeout(() => { el.className = ''; el.innerHTML = ''; }, 5000);
 }
-```
-
----
-
-## Próximo objetivo
-
-Construir una **app de consulta pública** que muestre los datos del mismo Google Sheet en formato navegable y filtrable, para que cualquier persona pueda explorar las prácticas de evaluación recogidas.
+</script>
+</body>
+</html>
