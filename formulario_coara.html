@@ -7,17 +7,17 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
-    --azul: #1a3a5c;
-    --azul-medio: #2d5986;
-    --azul-claro: #e8f0f8;
-    --acento: #c8932a;
-    --acento-claro: #fdf3e0;
-    --gris-borde: #d0d9e4;
-    --gris-fondo: #f4f6f9;
-    --texto: #1e2b3a;
-    --texto-suave: #5a6a7a;
+    --azul: #C96B10;
+    --azul-medio: #E07820;
+    --azul-claro: #FEF3E8;
+    --acento: #B82025;
+    --acento-claro: #FDECEA;
+    --gris-borde: #e0d5cc;
+    --gris-fondo: #f7f4f1;
+    --texto: #1e1a18;
+    --texto-suave: #6a5a50;
     --blanco: #ffffff;
-    --rojo: #c0392b;
+    --rojo: #B82025;
     --verde: #27ae60;
   }
 
@@ -32,31 +32,32 @@
 
   /* HEADER */
   header {
-    background: var(--azul);
-    color: white;
-    padding: 20px 40px;
+    background: #ffffff;
+    color: var(--texto);
+    padding: 16px 40px;
     display: flex;
     align-items: center;
     gap: 18px;
-    border-bottom: 4px solid var(--acento);
+    border-bottom: 4px solid var(--azul-medio);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.07);
   }
   .header-logo {
-    height: 52px;
+    height: 64px;
     width: auto;
     flex-shrink: 0;
-    filter: brightness(0) invert(1);
   }
   header .logo-text {
     font-family: 'DM Serif Display', serif;
     font-size: 1.4rem;
     line-height: 1.2;
+    color: var(--texto);
   }
   header .logo-text span {
     display: block;
     font-family: 'DM Sans', sans-serif;
     font-size: 0.78rem;
-    font-weight: 300;
-    opacity: 0.75;
+    font-weight: 400;
+    color: var(--texto-suave);
     letter-spacing: 0.08em;
     text-transform: uppercase;
     margin-top: 4px;
@@ -69,19 +70,19 @@
     flex-shrink: 0;
   }
   .btn-ayuda {
-    color: white;
+    color: var(--azul);
     text-decoration: none;
-    border: 1.5px solid rgba(255,255,255,0.45);
+    border: 1.5px solid var(--azul-medio);
     padding: 7px 16px;
     border-radius: 20px;
     font-size: 0.78rem;
-    font-weight: 500;
-    transition: background 0.2s;
+    font-weight: 600;
+    transition: background 0.2s, color 0.2s;
     white-space: nowrap;
   }
-  .btn-ayuda:hover { background: rgba(255,255,255,0.15); }
+  .btn-ayuda:hover { background: var(--azul-medio); color: white; }
   .coara-badge {
-    background: var(--acento);
+    background: var(--azul-medio);
     color: white;
     font-size: 0.72rem;
     font-weight: 600;
@@ -105,7 +106,7 @@
     border-radius: 12px;
     padding: 32px;
     margin-bottom: 28px;
-    box-shadow: 0 2px 12px rgba(26,58,92,0.07);
+    box-shadow: 0 2px 12px rgba(201,107,16,0.07);
   }
   .selector-card h2 {
     font-family: 'DM Serif Display', serif;
@@ -209,7 +210,7 @@
     border: 1px solid var(--gris-borde);
     border-radius: 12px;
     overflow: hidden;
-    box-shadow: 0 2px 12px rgba(26,58,92,0.07);
+    box-shadow: 0 2px 12px rgba(201,107,16,0.07);
     margin-bottom: 20px;
   }
   .section-header {
@@ -411,7 +412,7 @@
   /* RESPONSIVE */
   @media (max-width: 600px) {
     header { padding: 16px 20px; flex-wrap: wrap; }
-    .header-logo { height: 36px; }
+    .header-logo { height: 48px; }
     .two-col { grid-template-columns: 1fr; }
     .selector-row { flex-direction: column; }
     .btn-cargar, .btn-nueva { width: 100%; }
@@ -429,7 +430,7 @@
     font-size: 0.8rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase;
     border-bottom: 1px solid var(--gris-borde);
   }
-  .ind-cat-header:hover { background: #d5e4f0; }
+  .ind-cat-header:hover { background: #fde8d0; }
   .ind-table-wrap { overflow-x: auto; }
   .ind-table { width: 100%; border-collapse: collapse; }
   .ind-table th {
@@ -481,7 +482,7 @@
        alt="CoARA España" class="header-logo"
        onerror="this.style.display='none'">
   <div class="logo-text">
-    Prácticas de Evaluación Académica
+    Prácticas de Evaluación Académica y Científica
     <span>CoARA · Capítulo Nacional Español</span>
   </div>
   <div class="header-actions">
